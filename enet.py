@@ -84,8 +84,10 @@ class myUnet(object):
                 tbCallBack = TensorBoard(log_dir='./GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
 
                 model = self.get_unet()
-                checkpoint = 'enet_' + str(t) + 'hdf5'
-                model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss',verbose=1, save_best_only=True)
+
+                checkpoint = 'enet_' + t + '.hdf5'
+                model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=10)
+
                 model.fit_generator(generate(images_limit, folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=2000, verbose=1, callbacks=[model_checkpoint, tbCallBack])
 
 def get_unet():
@@ -94,4 +96,4 @@ def get_unet():
 
 if __name__ == '__main__':
         myunet = myUnet(224, 224)
-        myunet.train(100, 6, '..\\data\\data\\', '', '.jpg', time())
+        myunet.train(100, 4, '..\\data\\clean\\', '', '.jpg', str(time()))

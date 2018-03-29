@@ -7,8 +7,6 @@ import random
 
 def getImage(main_dir, source, pre, name, ext):
     path = os.path.join(main_dir, source, pre, name + ext)
-    print(path)
-
     img = imread(path, 0)
     img = img.reshape((img.shape[0], img.shape[1], 1))
     img = cv2.resize(img, (224, 224))
@@ -39,27 +37,30 @@ def generateENET(image_limit, folder_limit, main_dir, frame_pre, frame_ext):
 
         x12 = np.concatenate([x1, x2], axis=3)
 
-        print('')
         yield(x12, g)
 
         i += 1
 
 def generateYNET(image_limit, folder_limit, main_dir, frame_pre, audio_pre, frame_ext, audio_ext):
-    while True:
-        folder = getRandom(1, folder_limit)
-        source = str(folder)
+    while folder < folder_limit:
+        i = 1
+        while i < image_limit:
+            folder = getRandom(1, folder_limit)
+            source = str(folder)
 
-        i = getRandom(1, image_limit)
+            x = getImage(main_dir, source, frame_pre, str(i), frame_ext)
+            a = getImage(main_dir, source, audio_pre, str(i), audio_ext)
+            g = getImage(main_dir, source, frame_pre, str(i+1), frame_ext)
 
-        x = getImage(main_dir, source, frame_pre, str(i), frame_ext)
-        a = getImage(main_dir, source, audio_pre, str(i), audio_ext)
-        g = getImage(main_dir, source, frame_pre, str(i+1), frame_ext)
+            x = x.reshape((1, x.shape[0], x.shape[1], x.shape[2]))
+            a = a.reshape((1, a.shape[0], a.shape[1], a.shape[2]))
+            g = g.reshape((1, g.shape[0], g.shape[1], g.shape[2]))
 
-        x = x.reshape((1, x.shape[0], x.shape[1], x.shape[2]))
-        a = a.reshape((1, a.shape[0], a.shape[1], a.shape[2]))
-        g = g.reshape((1, g.shape[0], g.shape[1], g.shape[2]))
+            i += 1
 
-        print('')
-        i += 1
+            yield([x, a], g)
 
-        yield([x, a], g)
+    folder += 1
+    i = 1
+    if folder < folder_limit:
+        folder = 1
