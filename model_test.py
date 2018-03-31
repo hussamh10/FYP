@@ -34,8 +34,8 @@ def getImage(i, source, main_dir, ext, size):
     return img
 
 def ok():
-    i = 6
-    dir = '..\\data\\clean\\8\\'
+    i = 1
+    dir = '..\\data\\clean\\1\\'
     frame_ext = '.jpg'
     x1 = getImage(i  , '', dir, frame_ext, (224, 224))
     x2 = getImage(i+1, '', dir, frame_ext, (224, 224))
