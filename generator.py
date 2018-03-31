@@ -7,6 +7,7 @@ import random
 
 def getImage(main_dir, source, pre, name, ext):
     path = os.path.join(main_dir, source, pre, name + ext)
+    print(path)
     img = imread(path, 0)
     img = img.reshape((img.shape[0], img.shape[1], 1))
     img = cv2.resize(img, (224, 224))
@@ -20,7 +21,39 @@ def getImage(main_dir, source, pre, name, ext):
 def getRandom(min, max):
     return random.randint(min, max)
 
-def generateENET(image_limit, folder_limit, main_dir, frame_pre, frame_ext):
+def generateENET(folder_limit, main_dir, frame_pre, frame_ext):
+    folder = 1
+    while folder < folder_limit:
+        i = 1
+        while True:
+            source = str(folder)
+
+            fname = os.path.join(main_dir, source, '', str(i+2) + frame_ext)
+
+            if not os.path.isfile(fname):
+                break
+
+            x1 = getImage(main_dir, source, '', str(i), frame_ext)
+            x2 = getImage(main_dir, source, '', str(i+1), frame_ext)
+            g  = getImage(main_dir, source, '', str(i+2), frame_ext)
+
+            x1 = x1.reshape((1, x1.shape[0], x1.shape[1], x1.shape[2]))
+            x2 = x2.reshape((1, x2.shape[0], x2.shape[1], x2.shape[2]))
+            g = g.reshape((1, g.shape[0], g.shape[1], g.shape[2]))
+
+            x12 = np.concatenate([x1, x2], axis=3)
+
+            
+            i += 1
+            yield(x12, g)
+
+
+        folder += 1
+        if folder == folder_limit:
+            folder = 1
+
+
+def generateENETRandom(image_limit, folder_limit, main_dir, frame_pre, frame_ext):
     while True:
         folder = getRandom(1, folder_limit)
         source = str(folder)

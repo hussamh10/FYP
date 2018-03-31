@@ -78,7 +78,7 @@ class myUnet(object):
                 return model
 
 
-        def train(self, images_limit, folders_limit, main, frame_pre, frame_ext, t):
+        def train(self, folders_limit, main, frame_pre, frame_ext, t):
 
                 TensorBoard(log_dir='./GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
                 tbCallBack = TensorBoard(log_dir='./GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
@@ -88,7 +88,7 @@ class myUnet(object):
                 checkpoint = 'enet_' + t + '.hdf5'
                 model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=10)
 
-                model.fit_generator(generate(images_limit, folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=2000, verbose=1, callbacks=[model_checkpoint, tbCallBack])
+                model.fit_generator(generate(folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=10000, verbose=1, callbacks=[model_checkpoint, tbCallBack])
 
 def get_unet():
         myunet = myUnet(224, 224)
@@ -96,4 +96,6 @@ def get_unet():
 
 if __name__ == '__main__':
         myunet = myUnet(224, 224)
-        myunet.train(100, 4, '..\\data\\clean\\', '', '.jpg', str(time()))
+        #(number of folders, directory where the folders are, pre(ignore this), extension, time)
+        myunet.train(170, '..\\data\\clean\\', '', '.jpg', str(time()))
+
