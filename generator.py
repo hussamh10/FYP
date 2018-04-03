@@ -43,9 +43,10 @@ def generateENET(folder_limit, main_dir, frame_pre, frame_ext):
 
             x12 = np.concatenate([x1, x2], axis=3)
 
-            
             i += 1
-            yield(x12, g)
+            yield(x1, x2, g)
+
+            #yield(x12, g)
 
 
         folder += 1
