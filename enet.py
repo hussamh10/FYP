@@ -74,7 +74,7 @@ class myUnet(object):
 
                 model = Model(input = inputs, output = conv10)
 
-                model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_cross_entropy', metrics = ['accuracy'])
+                model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
                 return model
 
 
@@ -97,5 +97,5 @@ def get_unet():
 if __name__ == '__main__':
         myunet = myUnet(224, 224)
         #(number of folders, directory where the folders are, pre(ignore this), extension, time)
-        myunet.train(170, '..\\data\\clean\\', '', '.jpg', str(time()))
+        myunet.train(160, '..\\data', '', '.jpg', str(time()))
 

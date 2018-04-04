@@ -34,8 +34,8 @@ def getImage(i, source, main_dir, ext, size):
     return img
 
 def ok():
-    i = 1
-    dir = '..\\data\\clean\\1\\'
+    i = 12
+    dir = '../data/10'
     frame_ext = '.jpg'
     x1 = getImage(i  , '', dir, frame_ext, (224, 224))
     x2 = getImage(i+1, '', dir, frame_ext, (224, 224))
@@ -52,7 +52,7 @@ def ok():
 def test(start, video, tag):
     md = get_unet()
 
-    md.load_weights('enet_main.hdf5') 
+    md.load_weights('enet_4-april.hdf5') 
 
     h, hy, x1, x2 = ok()#gd(start = start, end = start + 5, video=video)
     
@@ -75,12 +75,12 @@ parent = 'testing'
 
 
 test(100, 1,  parent +'/similar_training_data/')
-#test(1, 2,  parent +'/traingin_data2/')
-##test(1, 4,  parent +'/traingin_data3/')
-#test(1, 6,  parent +'/traingin_data4/')
-##test(1, 10,  parent +'/test2/')
-##test(1, 22,  parent +'/test3/')
-##test(1, 23,  parent +'/test4/')
-##test(1, 24,  parent +'/test5/')
-#test(1, 28,  parent +'/test6/')
-####test(1, 42,  parent +'/test7/')
+test(1, 2,  parent +'/traingin_data2/')
+test(1, 4,  parent +'/traingin_data3/')
+test(1, 6,  parent +'/traingin_data4/')
+test(1, 10,  parent +'/test2/')
+test(1, 22,  parent +'/test3/')
+test(1, 23,  parent +'/test4/')
+test(1, 24,  parent +'/test5/')
+test(1, 28,  parent +'/test6/')
+test(1, 42,  parent +'/test7/')
