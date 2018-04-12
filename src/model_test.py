@@ -24,7 +24,7 @@ def getImage(i, source, main_dir, ext, size):
 
 def ok(start,videoType):
     i = start
-    dir = 'data\\test\\' + str(videoType) + '\\'
+    dir = '..\\data\\test\\' + str(videoType) + '\\'
     frame_ext = '.jpg'
     x1 = getImage(i  , '', dir, frame_ext, (224, 224))
     x2 = getImage(i+1, '', dir, frame_ext, (224, 224))
@@ -41,7 +41,8 @@ def ok(start,videoType):
 
 def test():
     md = get_unet()
-    md.load_weights('bestenet_1523432723.9143536.hdf5')
+
+    md.load_weights('..\\checkpoints\\wass.hdf5')
     root = '..\\testing\\'
     for videoType in range(1,14):
         tc = 1
