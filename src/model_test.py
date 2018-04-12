@@ -42,10 +42,11 @@ def ok(start,videoType):
 def test():
     md = get_unet()
     md.load_weights('bestenet_1523432723.9143536.hdf5')
+    root = '..\\testing\\'
     for videoType in range(1,14):
         tc = 1
         for start in range(1,30):
-            tag = "bestout\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
+            tag = root + "bestout\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
             
             
             h, hy, x1, x2 = ok(start,videoType)
@@ -68,8 +69,4 @@ def test():
                 i += 1
 	    	
             tc+=1
-    
-
-    
-
 test()

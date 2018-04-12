@@ -14,10 +14,7 @@ from generator import countFolderImages
 
 """
 +++++++++++++++++++++++++++++++++++++++++++++++++++
-    Version 3.0
-        - Changing BCE Loss to Wasserstien Loss  
-        - moved checkpoints to a folder
-        - changed data dir to ..\\data\\
+Notes:
 +++++++++++++++++++++++++++++++++++++++++++++++++++
 """
 
@@ -91,12 +88,12 @@ class myUnet(object):
 
         def train(self, folders_limit, main, frame_pre, frame_ext, t):
 
-                TensorBoard(log_dir='./GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
-                tbCallBack = TensorBoard(log_dir='./GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
+                TensorBoard(log_dir='..\\graphs\\' + 'GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
+                tbCallBack = TensorBoard(log_dir='..\\graphs\\' + 'GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
 
                 model = self.get_unet()
 
-                checkpoint_parent = 'checkpoint'
+                checkpoint_parent = '..\\checkpoints\\'
                 checkpoint = checkpoint_parent + 'eneenet_t_' + t + '.hdf5'
                 best_checkpoint = checkpoint_parent + 'best_enet' + t + '.hdf5'
                 model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=200)
