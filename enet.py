@@ -9,6 +9,17 @@ from keras import backend as keras
 from time import time
 
 from generator import generateENET as generate
+from generator import generateENETRandom as generateRandom
+from generator import countFolderImages
+
+"""
++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Version 3.0
+        - Changing BCE Loss to Wasserstien Loss  
+        - moved checkpoints to a folder
+        - changed data dir to ..\\data\\
++++++++++++++++++++++++++++++++++++++++++++++++++++
+"""
 
 class myUnet(object):
 
@@ -85,17 +96,26 @@ class myUnet(object):
 
                 model = self.get_unet()
 
-                checkpoint = 'enet_' + t + '.hdf5'
-                model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=10)
+                checkpoint_parent = 'checkpoint'
+                checkpoint = checkpoint_parent + 'eneenet_t_' + t + '.hdf5'
+                best_checkpoint = checkpoint_parent + 'best_enet' + t + '.hdf5'
+                model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=200)
+                mc_best = ModelCheckpoint(best_checkpoint, monitor='loss', save_best_only=True, verbose=1, mode='auto' , period=200)
 
-                model.fit_generator(generate(folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=10000, verbose=1, callbacks=[model_checkpoint, tbCallBack])
+                model.fit_generator(generateRandom(14000, folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=5005, verbose=1, callbacks=[model_checkpoint, tbCallBack, mc_best])
 
 def get_unet():
         myunet = myUnet(224, 224)
         return myunet.get_unet()
 
 if __name__ == '__main__':
+        main = '..\\data\\'
+        folders = 12
+        
+        
+        countFolderImages(folders,main)
+		
         myunet = myUnet(224, 224)
         #(number of folders, directory where the folders are, pre(ignore this), extension, time)
-        myunet.train(160, '..\\data', '', '.jpg', str(time()))
+        myunet.train(folders, main, '', '.jpg', str(time()))
 

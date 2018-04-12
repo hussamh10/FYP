@@ -20,7 +20,7 @@ def show(x):
 
 def getImage(i, source, main_dir, ext, size):
     name = str(i) + ext
-    print(main_dir + source + '/' + name)
+    print(main_dir + source + '\\' + name)
 
     path = os.path.join(main_dir, source , name)
     img = imread(path, 0)
@@ -33,9 +33,9 @@ def getImage(i, source, main_dir, ext, size):
 
     return img
 
-def ok():
-    i = 12
-    dir = '../data/10'
+def ok(start):
+    i = start
+    dir = 'data\\test\\1\\'
     frame_ext = '.jpg'
     x1 = getImage(i  , '', dir, frame_ext, (224, 224))
     x2 = getImage(i+1, '', dir, frame_ext, (224, 224))
@@ -49,12 +49,12 @@ def ok():
 
     return x1_2, x3, x1, x2
 
-def test(start, video, tag):
+def test(start, tag):
     md = get_unet()
 
-    md.load_weights('enet_4-april.hdf5') 
+    md.load_weights('bestenet_1523316283.5622604.hdf5') 
 
-    h, hy, x1, x2 = ok()#gd(start = start, end = start + 5, video=video)
+    h, hy, x1, x2 = ok(start)#gd(start = start, end = start + 32, video=video)
     
     hp = md.predict(h)
 
@@ -71,16 +71,10 @@ def test(start, video, tag):
 
     print("Done")
 
-parent = 'testing'
 
-
-test(100, 1,  parent +'/similar_training_data/')
-test(1, 2,  parent +'/traingin_data2/')
-test(1, 4,  parent +'/traingin_data3/')
-test(1, 6,  parent +'/traingin_data4/')
-test(1, 10,  parent +'/test2/')
-test(1, 22,  parent +'/test3/')
-test(1, 23,  parent +'/test4/')
-test(1, 24,  parent +'/test5/')
-test(1, 28,  parent +'/test6/')
-test(1, 42,  parent +'/test7/')
+#test(starting image number, output folder)
+folNum = 1
+for i in range(25159,25189):
+    folNamr = "testing\\bestout\\1\\tc (" + str(folNum) + ")\\"
+    test(i, folNamr)
+    folNum+=1

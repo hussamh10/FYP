@@ -4,10 +4,11 @@ from cv2 import imread
 import os
 import random
 
+arr = []
 
 def getImage(main_dir, source, pre, name, ext):
     path = os.path.join(main_dir, source, pre, name + ext)
-    print(path)
+    #print(path)
     img = imread(path, 0)
     img = img.reshape((img.shape[0], img.shape[1], 1))
     img = cv2.resize(img, (224, 224))
@@ -18,13 +19,14 @@ def getImage(main_dir, source, pre, name, ext):
     return img
 
 
+
 def getRandom(min, max):
     return random.randint(min, max)
 
 def generateENET(folder_limit, main_dir, frame_pre, frame_ext):
     folder = 1
     while folder < folder_limit:
-        i = 1
+        i = 2
         while True:
             source = str(folder)
 
@@ -44,9 +46,8 @@ def generateENET(folder_limit, main_dir, frame_pre, frame_ext):
             x12 = np.concatenate([x1, x2], axis=3)
 
             i += 1
-            yield(x1, x2, g)
 
-            #yield(x12, g)
+            yield(x12, g)
 
 
         folder += 1
@@ -58,9 +59,14 @@ def generateENETRandom(image_limit, folder_limit, main_dir, frame_pre, frame_ext
     while True:
         folder = getRandom(1, folder_limit)
         source = str(folder)
+        
+        #dataPath = main_dir + "\\" + source + "\\"
+        #print (dataPath) #commented out for performance gains
+        #a, b, files = os.walk(dataPath).__next__() #a and b not required by us
 
-        i = getRandom(1, image_limit)
-
+        #i = getRandom(2, len(files) - 10) #-10 just to be safe :p ; also starting from 2 since 2nd video had corrupted first frame (LUL) and I'm too lazy to rename all the images
+        
+        i = getRandom(2, arr[folder] - 1) #starting from 2 since 2nd video had corrupted first frame (LUL) and I'm too lazy to rename all the images
         x1 = getImage(main_dir, source, '', str(i), frame_ext)
         x2 = getImage(main_dir, source, '', str(i+1), frame_ext)
         g  = getImage(main_dir, source, '', str(i+2), frame_ext)
@@ -73,10 +79,8 @@ def generateENETRandom(image_limit, folder_limit, main_dir, frame_pre, frame_ext
 
         yield(x12, g)
 
-        i += 1
-
 def generateYNET(image_limit, folder_limit, main_dir, frame_pre, audio_pre, frame_ext, audio_ext):
-    while folder < folder_limit:
+    while folder <= folder_limit:
         i = 1
         while i < image_limit:
             folder = getRandom(1, folder_limit)
@@ -96,5 +100,13 @@ def generateYNET(image_limit, folder_limit, main_dir, frame_pre, audio_pre, fram
 
     folder += 1
     i = 1
-    if folder < folder_limit:
+    if folder >= folder_limit:
         folder = 1
+
+def countFolderImages(folder_limit, main_dir):
+    arr.append(0) #chaipi to start indexing from 1
+    for i in range(1,folder_limit+1):
+        dataPath = main_dir + "\\" + str(i) + "\\"
+        a, b, files = os.walk(dataPath).__next__() #a and b not required by us
+        arr.append(len(files))
+    print(arr)
