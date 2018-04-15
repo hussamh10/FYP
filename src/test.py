@@ -1,10 +1,8 @@
 from matplotlib import pyplot as plt
-from generator import generateENETRandom as gen
+from generator import generateYNET as gen
 from generator import countFolderImages as st
 
-st(4, '..\\drums\\')
-
-g = gen(12000, 4, '..\\drums\\', '', '.jpg')
+g = gen(100, 2, '..\\drums\\', '', 'audio\\', '.jpg', '.png')
 
 for i in range(1, 1000000):
     next(g)

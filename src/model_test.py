@@ -10,7 +10,7 @@ def save(data, i, path):
     cv2.imwrite(path + str(i) + ".png",data)
 
 def getImage(i, source, main_dir, ext, size):
-    name = 'i (' + str(i) + ')' + ext
+    name = str(i) + ext
     #print(main_dir + source + name)
 
     path = os.path.join(main_dir, source , name)
@@ -24,7 +24,7 @@ def getImage(i, source, main_dir, ext, size):
 
 def ok(start,videoType):
     i = start
-    dir = '..\\data\\test\\' + str(videoType) + '\\'
+    dir = '..\\drums\\test\\' + str(videoType) + '\\'
     frame_ext = '.jpg'
     x1 = getImage(i  , '', dir, frame_ext, (224, 224))
     x2 = getImage(i+1, '', dir, frame_ext, (224, 224))
@@ -42,12 +42,12 @@ def ok(start,videoType):
 def test():
     md = get_unet()
 
-    md.load_weights('..\\checkpoints\\wass.hdf5')
+    md.load_weights('..\\checkpoints\\backup\\es.hdf5')
     root = '..\\testing\\'
     for videoType in range(1,14):
         tc = 1
         for start in range(1,30):
-            tag = root + "bestout\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
+            tag = root + "backup2\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
             
             
             h, hy, x1, x2 = ok(start,videoType)

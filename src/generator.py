@@ -21,6 +21,34 @@ def getImage(main_dir, source, pre, name, ext):
 def getRandom(min, max):
     return random.randint(min, max)
 
+def generateYNET(image_limit, folder_limit, main_dir, frame_pre, audio_pre, frame_ext, audio_ext):
+    folder = 1
+    while folder <= folder_limit:
+        i = 1
+        while True:
+            source = str(folder)
+
+            fname = os.path.join(main_dir, source, '', str(i+1) + frame_ext)
+            if not os.path.isfile(fname):
+                break
+             
+            x = getImage(main_dir, source, frame_pre, str(i), frame_ext)
+            a = getImage(main_dir, source, audio_pre, str(i), audio_ext)
+            g = getImage(main_dir, source, frame_pre, str(i+1), frame_ext)
+
+            x = x.reshape((1, x.shape[0], x.shape[1], x.shape[2]))
+            a = a.reshape((1, a.shape[0], a.shape[1], a.shape[2]))
+            g = g.reshape((1, g.shape[0], g.shape[1], g.shape[2]))
+
+            i += 1
+
+            yield([x, a], g)
+
+        folder += 1
+        i = 1
+        if folder > folder_limit:
+            folder = 1
+
 def generateENET(folder_limit, main_dir, frame_pre, frame_ext):
     folder = 1
     while folder < folder_limit:
@@ -76,30 +104,6 @@ def generateENETRandom(image_limit, folder_limit, main_dir, frame_pre, frame_ext
         x12 = np.concatenate([x1, x2], axis=3)
 
         yield(x12, g)
-
-def generateYNET(image_limit, folder_limit, main_dir, frame_pre, audio_pre, frame_ext, audio_ext):
-    while folder <= folder_limit:
-        i = 1
-        while i < image_limit:
-            folder = getRandom(1, folder_limit)
-            source = str(folder)
-
-            x = getImage(main_dir, source, frame_pre, str(i), frame_ext)
-            a = getImage(main_dir, source, audio_pre, str(i), audio_ext)
-            g = getImage(main_dir, source, frame_pre, str(i+1), frame_ext)
-
-            x = x.reshape((1, x.shape[0], x.shape[1], x.shape[2]))
-            a = a.reshape((1, a.shape[0], a.shape[1], a.shape[2]))
-            g = g.reshape((1, g.shape[0], g.shape[1], g.shape[2]))
-
-            i += 1
-
-            yield([x, a], g)
-
-    folder += 1
-    i = 1
-    if folder >= folder_limit:
-        folder = 1
 
 def countFolderImages(folder_limit, main_dir):
     arr.append(0) #chaipi to start indexing from 1

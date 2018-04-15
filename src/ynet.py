@@ -8,8 +8,8 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler, TensorBoard
 from keras import backend as keras
 from time import time
 
-from generator import generate
-from audio import getAudio
+from generator import generateYNET as generate
+from audioNet import getAudio
 
 
 def get_unet(img_rows=224, img_cols=224):
@@ -81,20 +81,20 @@ def get_unet(img_rows=224, img_cols=224):
     return model
 
 def train(t):
-    TensorBoard(log_dir='./Graph', histogram_freq=0, 
+    TensorBoard(log_dir='../graphs/graph', histogram_freq=0, 
             write_graph=True, write_images=True)
 
-    tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
+    tbCallBack = TensorBoard(log_dir='../graphs/graph', histogram_freq=0, write_graph=True, write_images=True)
 
     model = get_unet()
     print("got unet")
 
-    weights = 'ynet' + str(t) + '.hdf5'
+    weights = 'ynet' + '.hdf5'
 
-    model_checkpoint = ModelCheckpoint(, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=10)
+    model_checkpoint = ModelCheckpoint(weights, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=105)
     print('Fitting model...')
 
-    model.fit_generator(generate(100, 12), steps_per_epoch=20, epochs=2000, verbose=1, callbacks=[model_checkpoint, tbCallBack])
+    model.fit_generator(generate(100, 2, '..\\drums\\', '', 'audio\\', '.jpg', '.png'), steps_per_epoch=20, epochs=2000, verbose=1, callbacks=[model_checkpoint, tbCallBack])
 
 if __name__ == '__main__':
     train(time())
