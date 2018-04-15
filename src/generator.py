@@ -18,8 +18,6 @@ def getImage(main_dir, source, pre, name, ext):
 
     return img
 
-
-
 def getRandom(min, max):
     return random.randint(min, max)
 
@@ -108,5 +106,5 @@ def countFolderImages(folder_limit, main_dir):
     for i in range(1,folder_limit+1):
         dataPath = main_dir + "\\" + str(i) + "\\"
         a, b, files = os.walk(dataPath).__next__() #a and b not required by us
-        arr.append(len(files))
+        arr.append(len(files)-3) #just to be safe
     print(arr)

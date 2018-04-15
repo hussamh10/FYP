@@ -3,4 +3,5 @@ graphs/
 out/
 testing/
 checkpoints/
-data 
+data/
+drums/

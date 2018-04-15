@@ -12,26 +12,19 @@ from generator import generateENET as generate
 from generator import generateENETRandom as generateRandom
 from generator import countFolderImages
 
+import click
+import datetime as dt
+
+
 """
 +++++++++++++++++++++++++++++++++++++++++++++++++++
 Notes: 
         - Added Wasserstein loss function
         - Removed Wasserstein
+        - Added flags
 +++++++++++++++++++++++++++++++++++++++++++++++++++
 """
 
-def wasserstein_loss(y_true, y_pred):
-
-    """Calculates the Wasserstein loss for a sample batch.
-    The Wasserstein loss function is very simple to calculate. In a standard GAN, the discriminator
-    has a sigmoid output, representing the probability that samples are real or generated. In Wasserstein
-    GANs, however, the output is linear with no activation function! Instead of being constrained to [0, 1],
-    the discriminator wants to make the distance between its output for real and generated samples as large as possible.
-    The most natural way to achieve this is to label generated samples -1 and real samples 1, instead of the
-    0 and 1 used in normal GANs, so that multiplying the outputs by the labels will give you the loss immediately.
-    Note that the nature of this loss means that it can be (and frequently will be) less than 0."""
-
-    return K.mean(y_true * y_pred)
 
 class myUnet(object):
 
@@ -101,32 +94,36 @@ class myUnet(object):
                 return model
 
 
-        def train(self, folders_limit, main, frame_pre, frame_ext, t):
+        def train(self, epochs, period, folders_limit, main, frame_pre, frame_ext, t):
 
-                TensorBoard(log_dir='..\\graphs\\' + 'GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
-                tbCallBack = TensorBoard(log_dir='..\\graphs\\' + 'GraphENET'+t, histogram_freq=0, write_graph=True, write_images=True)
+                TensorBoard(log_dir='..\\graphs\\' + 'graph_'+t, histogram_freq=0, write_graph=True, write_images=True)
+                tbCallBack = TensorBoard(log_dir='..\\graphs\\' + 'graph_'+t, histogram_freq=0, write_graph=True, write_images=True)
 
                 model = self.get_unet()
 
                 checkpoint_parent = '..\\checkpoints\\'
                 checkpoint = checkpoint_parent + 'enet_' + t + '.hdf5'
-                best_checkpoint = checkpoint_parent + 'best_enet' + t + '.hdf5'
-                model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=100)
-                mc_best = ModelCheckpoint(best_checkpoint, monitor='loss', save_best_only=True, verbose=1, mode='auto' , period=100)
+                best_checkpoint = checkpoint_parent + 'best_enet_' + t + '.hdf5'
+                model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=period)
+                mc_best = ModelCheckpoint(best_checkpoint, monitor='loss', save_best_only=True, verbose=1, mode='auto' , period=period)
 
-                model.fit_generator(generateRandom(14000, folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=105, verbose=1, callbacks=[model_checkpoint, tbCallBack, mc_best])
+                model.fit_generator(generateRandom(14000, folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=epochs, verbose=1, callbacks=[model_checkpoint, tbCallBack, mc_best])
 
 def get_unet():
         myunet = myUnet(224, 224)
         return myunet.get_unet()
 
+@click.command()
+@click.option('--name', default=str(dt.date.today()), help='Name of the experiment', show_default=True)
+@click.option('--src', default='..\\data\\', help='Source of data', show_default=True)
+@click.option('--folders', default=4, help='Number of folders to train', show_default=True)
+@click.option('--epochs', default=10000, help='Number of epochs', show_default=True)
+@click.option('--period', default=205, help='Saving after period', show_default=True)
+def main(name, src, folders, epochs, period):
+    print(name, src, folders, epochs, period)
+    countFolderImages(folders, src)
+    myunet = myUnet(224, 224)
+    myunet.train(epochs, period, folders, src, '', '.jpg', name + '____' + str(time()))
+
 if __name__ == '__main__':
-        main = '..\\data\\'
-        folders = 2
-        
-        
-        countFolderImages(folders,main)
-		
-        myunet = myUnet(224, 224)
-        #(number of folders, directory where the folders are, pre(ignore this), extension, time)
-        myunet.train(folders, main, '', '.jpg', str(time()))
+        main()
