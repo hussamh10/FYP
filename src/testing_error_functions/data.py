@@ -29,6 +29,5 @@ def print():
 	plt.imshow(y, cmap='gray')
 	plt.show()
 	
-	
 if __name__ == '__main__':
 	print()
