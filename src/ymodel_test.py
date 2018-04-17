@@ -1,7 +1,7 @@
 from cv2 import imread
 import cv2
 import os
-from enet import get_unet
+from ynet import get_unet
 import keras
 import numpy as np
 
@@ -24,10 +24,11 @@ def getImage(i, source, main_dir, ext, size):
 
 def ok(start,videoType):
     i = start
-    dir = '..\\drums\\test\\' + str(videoType) + '\\'
+    dir = '..\\drums\\' + str(videoType) + '\\'
     frame_ext = '.jpg'
+    audio_ext = '.png'
     x1 = getImage(i  , '', dir, frame_ext, (224, 224))
-    x2 = getImage(i, 'audio\\', dir, frame_ext, (224, 224))
+    x2 = getImage(i, 'audio\\', dir, audio_ext, (224, 224))
     x3 = getImage(i+1, '', dir, frame_ext, (224, 224))
     print("-------------------------------")
 
@@ -35,19 +36,18 @@ def ok(start,videoType):
     x2 = x2.reshape((1, x2.shape[0], x2.shape[1], x2.shape[2]))
     x3 = x3.reshape((1, x3.shape[0], x3.shape[1], x3.shape[2]))
 
-    x1_2 = np.concatenate([x1, x2], axis=3)
 
-    return x1_2, x3, x1, x2
+    return [x1, x2], x3, x1, x2
 
 def test():
     md = get_unet()
 
-    md.load_weights('..\\checkpoints\\backup\\es.hdf5')
+    md.load_weights('..\\checkpoints\\backup\\ys.hdf5')
     root = '..\\testing\\'
     for videoType in range(1,14):
         tc = 1
         for start in range(1,30):
-            tag = root + "backup2\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
+            tag = root + "backup3\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
             
             
             h, hy, x1, x2 = ok(start,videoType)
@@ -70,4 +70,5 @@ def test():
                 i += 1
 	    	
             tc+=1
+print('Testing')
 test()

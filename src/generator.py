@@ -8,7 +8,6 @@ arr = []
 
 def getImage(main_dir, source, pre, name, ext):
     path = os.path.join(main_dir, source, pre, name + ext)
-    print(path)
     img = imread(path, 0)
     img = img.reshape((img.shape[0], img.shape[1], 1))
     img = cv2.resize(img, (224, 224))

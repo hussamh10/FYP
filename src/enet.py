@@ -107,7 +107,7 @@ class myUnet(object):
                 model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=period)
                 mc_best = ModelCheckpoint(best_checkpoint, monitor='loss', save_best_only=True, verbose=1, mode='auto' , period=period)
 
-                model.fit_generator(generate(folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=epochs, verbose=1, callbacks=[model_checkpoint, tbCallBack, mc_best])
+                model.fit_generator(generateRandom(1000, folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=epochs, verbose=1, callbacks=[model_checkpoint, tbCallBack, mc_best])
 
 def get_unet():
         myunet = myUnet(224, 224)
@@ -121,7 +121,7 @@ def get_unet():
 @click.option('--period', default=205, help='Saving after period', show_default=True)
 def main(name, src, folders, epochs, period):
     print(name, src, folders, epochs, period)
-    #countFolderImages(folders, src)
+    countFolderImages(folders, src)
     myunet = myUnet(224, 224)
     myunet.train(epochs, period, folders, src, '', '.jpg', name + '____' + str(time()))
 
