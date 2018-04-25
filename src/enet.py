@@ -115,10 +115,10 @@ def get_unet():
 
 @click.command()
 @click.option('--name', default=str(dt.date.today()), help='Name of the experiment', show_default=True)
-@click.option('--src', default='..\\data\\', help='Source of data', show_default=True)
-@click.option('--folders', default=4, help='Number of folders to train', show_default=True)
-@click.option('--epochs', default=10000, help='Number of epochs', show_default=True)
-@click.option('--period', default=205, help='Saving after period', show_default=True)
+@click.option('--src', default='..\\data\\dumb\\', help='Source of data', show_default=True)
+@click.option('--folders', default=7, help='Number of folders to train', show_default=True)
+@click.option('--epochs', default=10005, help='Number of epochs', show_default=True)
+@click.option('--period', default=200, help='Saving after period', show_default=True)
 def main(name, src, folders, epochs, period):
     print(name, src, folders, epochs, period)
     countFolderImages(folders, src)

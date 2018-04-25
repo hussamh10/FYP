@@ -9,10 +9,12 @@ from keras import backend as keras
 from time import time
 
 from generator import generateYNET as generate
+from generator import generateYNETRandom as generateRandom
 from audioNet import getAudio
+from generator import countFolderImages
 
 
-def get_unet(img_rows=224, img_cols=224):
+def get_ynet(img_rows=224, img_cols=224):
 
     inputs = Input((img_rows, img_cols,1))
 
@@ -76,25 +78,26 @@ def get_unet(img_rows=224, img_cols=224):
 
     model = Model(input = [inputs, audio_in], output = conv10)
 
-    model.compile(optimizer = Adam(lr = 1e-4), loss = 'MSE', metrics = ['accuracy'])
+    model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
 
     return model
 
 def train(t):
-    TensorBoard(log_dir='../graphs/graph', histogram_freq=0, 
+    TensorBoard(log_dir='..\\\graphs\\graph', histogram_freq=0, 
             write_graph=True, write_images=True)
 
-    tbCallBack = TensorBoard(log_dir='../graphs/graph', histogram_freq=0, write_graph=True, write_images=True)
+    tbCallBack = TensorBoard(log_dir='..\\graphs\\graph', histogram_freq=0, write_graph=True, write_images=True)
 
-    model = get_unet()
-    print("got unet")
+    model = get_ynet()
+    print("got ynet")
 
     weights = 'ynet' + '.hdf5'
 
-    model_checkpoint = ModelCheckpoint(weights, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=105)
+    model_checkpoint = ModelCheckpoint(weights, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=100)
     print('Fitting model...')
 
-    model.fit_generator(generate(100, 2, '..\\drums\\', '', 'audio\\', '.jpg', '.png'), steps_per_epoch=20, epochs=2000, verbose=1, callbacks=[model_checkpoint, tbCallBack])
+    model.fit_generator(generateRandom(4919, 1, '..\\data\\dumb\\', 'frames\\', 'specs\\', '.jpg', '.png'), steps_per_epoch=20, epochs=2005, verbose=1, callbacks=[model_checkpoint, tbCallBack])
 
 if __name__ == '__main__':
+    #countFolderImages(folders, src)
     train(time())

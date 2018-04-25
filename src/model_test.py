@@ -10,7 +10,8 @@ def save(data, i, path):
     cv2.imwrite(path + str(i) + ".png",data)
 
 def getImage(i, source, main_dir, ext, size):
-    name = str(i) + ext
+    #name ='i (' + str(i) + ')' + ext
+    name =str(i) + ext #for dumb data
     #print(main_dir + source + name)
 
     path = os.path.join(main_dir, source , name)
@@ -24,11 +25,11 @@ def getImage(i, source, main_dir, ext, size):
 
 def ok(start,videoType):
     i = start
-    dir = '..\\drums\\test\\' + str(videoType) + '\\'
+    dir = '..\\data\\dumb\\test\\' + str(videoType) + '\\'
     frame_ext = '.jpg'
     x1 = getImage(i  , '', dir, frame_ext, (224, 224))
-    x2 = getImage(i, 'audio\\', dir, frame_ext, (224, 224))
-    x3 = getImage(i+1, '', dir, frame_ext, (224, 224))
+    x2 = getImage(i+1, '', dir, frame_ext, (224, 224))
+    x3 = getImage(i+2, '', dir, frame_ext, (224, 224))
     print("-------------------------------")
 
     x1 = x1.reshape((1, x1.shape[0], x1.shape[1], x1.shape[2]))
@@ -42,12 +43,12 @@ def ok(start,videoType):
 def test():
     md = get_unet()
 
-    md.load_weights('..\\checkpoints\\backup\\es.hdf5')
+    md.load_weights('..\\checkpoints\\enet.hdf5')
     root = '..\\testing\\'
-    for videoType in range(1,14):
+    for videoType in range(1,8):
         tc = 1
         for start in range(1,30):
-            tag = root + "backup2\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
+            tag = root + "19april\\" + str(videoType) + "\\tc (" + str(tc) + ")\\"
             
             
             h, hy, x1, x2 = ok(start,videoType)
