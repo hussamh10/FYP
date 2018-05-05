@@ -7,6 +7,13 @@ from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler, TensorBoard
 from keras import backend as keras
 
+"""
+This is a varient of the VGG network that takes as input the audio spectogram.
+This model is then attached to the middle of the YNet
+
+The dimensions of the input audio spectogram image is 224x224x1 by default.
+"""
+
 def getAudio(r = 224, c = 224):
     inputs = Input((r, c,1))
 

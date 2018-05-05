@@ -4,6 +4,10 @@ from cv2 import imread
 import os
 import random
 
+"""
+The data generator for YNET/ENET/FCNET are implemented here
+"""
+
 arr = []
 
 def getImage(main_dir, source, pre, name, ext):

@@ -3,6 +3,11 @@ from matplotlib import pyplot as plt
 import scipy.io.wavfile as wav
 from numpy.lib import stride_tricks
 import cv2
+
+"""
+Used to create audio spectogram images from audio files
+"""
+
 """ short time fourier transform of audio signal """
 def stft(sig, frameSize, overlapFac=0.5, window=np.hanning):
     win = window(frameSize)

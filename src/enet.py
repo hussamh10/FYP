@@ -17,14 +17,12 @@ import datetime as dt
 
 
 """
-+++++++++++++++++++++++++++++++++++++++++++++++++++
-Notes: 
-        - Added Wasserstein loss function
-        - Removed Wasserstein
-        - Added flags
-+++++++++++++++++++++++++++++++++++++++++++++++++++
-"""
+This module creates and trains the enet model. Enet model is used for extrapolation purposes.
+The hyperparameters are changed by setting the flags while running the python script.
+By default the model takes as input 2 concatenated images (Xn and Xn+1) with dimensions 224x224x1
 
+To feed the network data, a generator is used.
+"""
 
 class myUnet(object):
 
