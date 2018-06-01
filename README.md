@@ -1,6 +1,14 @@
 # The Project:
 
-This repository is code for a convolutional neural network that trains over the frames of a video  and log-spectrograms of the video's sound to generate subsequent frames.
+This repository is code for a convolutional neural network that trains over the frames of a video and log-spectrograms of the video's sound to extrapolate subsequent frames by,
+
+- Hussam Habib
+- Osama Haroon Rana
+- Muhammad Haroon
+- Mohammad Saad Mujeeb
+
+under the supervision of Dr. Muhammad Usman Sadiq.
+
 There are three main models.
 ENET - a model that takes two consequtive frames and generates the next frame.
 YNET - a model that takes a frame and that frame's sound's log-spectrogram 
