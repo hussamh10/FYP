@@ -20,3 +20,9 @@ There are two environments that you need to run this code, one for generating th
 ## Testing the model:
 See the sample test file structure on what the test files are expected to be in each folder. Use the log_spec.py file in a "spect" environment to generate spectrograms from .wav files
 To test the models, run emodel_test_feedback.py, ymodel_test_feedback.py and fmodel_test_feedback.py (in that order) to produce the final results in the testing\with_feeback\1\f\ dir. In this folder, 1 and 2 were provided as is, while 3 and 4 were generated from 1 and 2. 5 and 6 were used to generate 7 and 8, and so on.
+
+## Note:
+Due to bandwidth issues we have uploaded the model weights (checkpoints/), training data (data/), testing data (testing/) and tutorials to google drive on the following public link:
+https://drive.google.com/open?id=1G8xyKC0wYDR2wyaunUbfwopmBhmoABCR
+
+Just copy the foldes and paste them into the root of the repository.
