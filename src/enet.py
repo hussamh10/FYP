@@ -8,21 +8,12 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler, TensorBoard
 from keras import backend as keras 
 from time import time
 
-from generator import generateENET as generate
 from generator import generateENETRandom as generateRandom
 from generator import countFolderImages
 
 import click
 import datetime as dt
 
-
-"""
-This module creates and trains the enet model. Enet model is used for extrapolation purposes.
-The hyperparameters are changed by setting the flags while running the python script.
-By default the model takes as input 2 concatenated images (Xn and Xn+1) with dimensions 224x224x1
-
-To feed the network data, a generator is used.
-"""
 
 class myUnet(object):
 
@@ -105,7 +96,7 @@ class myUnet(object):
                 model_checkpoint = ModelCheckpoint(checkpoint, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=period)
                 mc_best = ModelCheckpoint(best_checkpoint, monitor='loss', save_best_only=True, verbose=1, mode='auto' , period=period)
 
-                model.fit_generator(generateRandom(1000, folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=epochs, verbose=1, callbacks=[model_checkpoint, tbCallBack, mc_best])
+                model.fit_generator(generateRandom(folders_limit, main, frame_pre, frame_ext), steps_per_epoch=30, epochs=epochs, verbose=1, callbacks=[model_checkpoint, tbCallBack, mc_best])
 
 def get_unet():
         myunet = myUnet(224, 224)
@@ -113,9 +104,9 @@ def get_unet():
 
 @click.command()
 @click.option('--name', default=str(dt.date.today()), help='Name of the experiment', show_default=True)
-@click.option('--src', default='..\\data\\dumb\\', help='Source of data', show_default=True)
-@click.option('--folders', default=7, help='Number of folders to train', show_default=True)
-@click.option('--epochs', default=10005, help='Number of epochs', show_default=True)
+@click.option('--src', default='..\\data\\tabletennis\\frames\\', help='Source of data', show_default=True)
+@click.option('--folders', default=1, help='Number of folders to train', show_default=True)
+@click.option('--epochs', default=2005, help='Number of epochs', show_default=True)
 @click.option('--period', default=200, help='Saving after period', show_default=True)
 def main(name, src, folders, epochs, period):
     print(name, src, folders, epochs, period)

@@ -1,7 +1,4 @@
-__pycache__/
-graphs/
-out/
-testing/
-checkpoints/
-data/
-drums/
+/checkpoints
+/data
+/tutorials
+/testing

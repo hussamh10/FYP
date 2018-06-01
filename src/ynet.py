@@ -8,10 +8,12 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler, TensorBoard
 from keras import backend as keras
 from time import time
 
-from generator import generateYNET as generate
 from generator import generateYNETRandom as generateRandom
 from audioNet import getAudio
 from generator import countFolderImages
+
+import click
+import datetime as dt
 
 
 def get_ynet(img_rows=224, img_cols=224):
@@ -82,22 +84,33 @@ def get_ynet(img_rows=224, img_cols=224):
 
     return model
 
-def train(t):
-    TensorBoard(log_dir='..\\\graphs\\graph', histogram_freq=0, 
+def train(epochs_input, period_input, folders_limit, main, frame_pre, frame_ext, t):
+    TensorBoard(log_dir='..\\graphs\\graph_'+t, histogram_freq=0, 
             write_graph=True, write_images=True)
 
-    tbCallBack = TensorBoard(log_dir='..\\graphs\\graph', histogram_freq=0, write_graph=True, write_images=True)
+    tbCallBack = TensorBoard(log_dir='..\\graphs\\graph_'+t, histogram_freq=0, write_graph=True, write_images=True)
 
     model = get_ynet()
     print("got ynet")
 
     weights = 'ynet' + '.hdf5'
 
-    model_checkpoint = ModelCheckpoint(weights, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=100)
+    model_checkpoint = ModelCheckpoint(weights, monitor='loss', save_best_only=False, verbose=1, mode='auto', period=period_input)
     print('Fitting model...')
 
-    model.fit_generator(generateRandom(4919, 1, '..\\data\\dumb\\', 'frames\\', 'specs\\', '.jpg', '.png'), steps_per_epoch=20, epochs=2005, verbose=1, callbacks=[model_checkpoint, tbCallBack])
+    model.fit_generator(generateRandom(folders_limit, '..\\data\\tabletennis\\', 'frames\\', 'specs\\', '.jpg', '.png'), steps_per_epoch=30, epochs=epochs_input, verbose=1, callbacks=[model_checkpoint, tbCallBack])
+
+	
+@click.command()
+@click.option('--name', default=str(dt.date.today()), help='Name of the experiment', show_default=True)
+@click.option('--src', default='..\\data\\tabletennis\\frames\\', help='Source of data', show_default=True)
+@click.option('--folders', default=1, help='Number of folders to train', show_default=True)
+@click.option('--epochs', default=2005, help='Number of epochs', show_default=True)
+@click.option('--period', default=200, help='Saving after period', show_default=True)
+def main(name, src, folders, epochs, period):
+    print(name, src, folders, epochs, period)
+    countFolderImages(folders, src)
+    train(epochs, period, folders, src, '', '.jpg', name + '____' + str(time()))
 
 if __name__ == '__main__':
-    #countFolderImages(folders, src)
-    train(time())
+        main()
