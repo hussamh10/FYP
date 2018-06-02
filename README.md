@@ -20,6 +20,12 @@ This code is supposed to be run in a Windows environment (since all of the file 
 
 There are two environments that you need to run this code, one for generating the log-spectrograms (called "spect") and the other for running the bulk of the code(called "tensorflow"). The key difference between the two environmets is the version of numpy. The following screenshot detail the two anaconda enviroments:
 
+tensorflow:
+![tensorflow](https://i.imgur.com/yYMaSFM.png)
+
+spect:
+![spect](https://i.imgur.com/ibIkfYT.png)
+
 ## Training the model:
 1. to train enet, run the enet.py in a "tensorflow" environment. This will, by default, train the enet model over 2000 epochs and will save the weights after every 200 epochs.
 2. to train ynet, run the ynet.py in a "tensorflow" environment. This will, by default, train the ynet model over 2000 epochs and will save the weights after every 200 epochs.
