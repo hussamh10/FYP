@@ -39,4 +39,4 @@ To test the models, run emodel_test_feedback.py, ymodel_test_feedback.py and fmo
 Due to bandwidth issues we have uploaded the model weights (checkpoints/), training data (data/), testing data (testing/) and tutorials to google drive on the following public link:
 - https://drive.google.com/open?id=1G8xyKC0wYDR2wyaunUbfwopmBhmoABCR
 
-Just copy the foldes and paste them into the root of the repository.
+Just copy the folders and paste them into the root of the repository.
