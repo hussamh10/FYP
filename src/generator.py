@@ -28,15 +28,19 @@ def generateENETRandom(folder_limit, main_dir, frame_pre, frame_ext):
         i = getRandom(1, arr[folder] - 3) #get random starting image from a randomly selected folder
         x1 = getImage(main_dir, source, '', str(i), frame_ext)
         x2 = getImage(main_dir, source, '', str(i+1), frame_ext)
-        g  = getImage(main_dir, source, '', str(i+2), frame_ext)
+        g1  = getImage(main_dir, source, '', str(i+2), frame_ext)
+        g2  = getImage(main_dir, source, '', str(i+3), frame_ext)
 
         x1 = x1.reshape((1, x1.shape[0], x1.shape[1], x1.shape[2]))
         x2 = x2.reshape((1, x2.shape[0], x2.shape[1], x2.shape[2]))
-        g = g.reshape((1, g.shape[0], g.shape[1], g.shape[2]))
 
+        g1 = g1.reshape((1, g1.shape[0], g1.shape[1], g1.shape[2]))
+        g2 = g2.reshape((1, g2.shape[0], g2.shape[1], g2.shape[2]))
+
+        g12 = np.concatenate([g1, g2], axis=3)
         x12 = np.concatenate([x1, x2], axis=3)
 
-        yield(x12, g)
+        yield(x12, g12)
 
 def generateYNETRandom(folder_limit, main_dir, frame_pre, audio_pre, frame_ext, audio_ext):
     while True:
